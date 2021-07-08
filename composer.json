@@ -1,5 +1,5 @@
 {
-    "name": "alexcrawford/lexorank-php",
+    "name": "kanbanbox/lexorank-php",
     "description": "PHP Implementation of JIRA's LexoRank algorithm.",
     "license": "DBAD",
     "authors": [
@@ -10,10 +10,10 @@
     ],
     "type": "project",
     "require": {
-		"php": ">=7.1"
+        "php": ">=7.1"
     },
     "require-dev": {
-		"phpunit/phpunit": "^7.4"
+        "phpunit/phpunit": "^7.4"
     },
     "autoload": {
         "psr-4": {
@@ -24,5 +24,8 @@
         "psr-4": {
             "AlexCrawford\\LexoRank\\Tests\\": "tests/"
         }
+    },
+    "replace": {
+        "alexcrawford/lexorank-php": "1.*"
     }
 }
