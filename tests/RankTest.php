@@ -43,4 +43,10 @@ class RankTest extends TestCase
         $this->assertSame('azU', $rank);
     }
 
+    public function testSuccessNewDigitMidValueSpecialCase()
+    {
+        $rank = (new Rank('amz', 'ana'))->get();
+        $this->assertSame('amzU', $rank);
+    }
+
 }

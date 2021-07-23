@@ -54,9 +54,6 @@ class Rank
                 continue;
             }
 
-//            var_dump($midChar);
-//            die;
-
             $rank .= $midChar;
             break;
         }
@@ -71,6 +68,10 @@ class Rank
 
     private function mid(string $prev, string $next)
     {
+        if (ord($prev) > ord($next)) {
+            return ($prev);
+        }
+
         return chr((ord($prev) + ord($next)) / 2);
     }
 
