@@ -1,7 +1,7 @@
 {
     "name": "alexcrawford/lexorank-php",
     "description": "PHP Implementation of JIRA's LexoRank algorithm.",
-    "license": "DBAD",
+    "license": "MIT",
     "authors": [
         {
             "name": "Alex Crawford",
