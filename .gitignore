@@ -1,6 +1,5 @@
 .idea
 vendor
-composer.lock
 .phpcs.cache
 .phpunit.result.cache
 psalm_cache
