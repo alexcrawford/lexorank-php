@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Infection on entire Project" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/roave-infection-static-analysis-plugin" scriptParameters="--min-msi=80 --test-framework-options=&quot;--testsuite=UnitTest&quot; --min-covered-msi=80 --ignore-msi-with-no-mutations">
-    <CommandLine parameters="-dmemory_limit=-1" workingDirectory="$PROJECT_DIR$" />
-    <method v="2" />
-  </configuration>
-</component>

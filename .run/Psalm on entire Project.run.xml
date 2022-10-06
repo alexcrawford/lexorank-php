@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Psalm on entire Project" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/psalm" scriptParameters="--no-cache">
-    <CommandLine parameters="-dmemory_limit=-1" workingDirectory="$PROJECT_DIR$" />
-    <method v="2" />
-  </configuration>
-</component>

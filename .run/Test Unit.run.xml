@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test Unit" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-    <CommandLine parameters="-dmemory_limit=-1" workingDirectory="$PROJECT_DIR$" />
-    <TestRunner configuration_file="/home/ubuntu/PhpstormProjects/lexorankphp/phpunit.xml" scope="XML" options="--testsuite=UnitTest" />
-    <method v="2" />
-  </configuration>
-</component>
