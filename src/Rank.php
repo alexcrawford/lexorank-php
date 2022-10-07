@@ -31,11 +31,19 @@ final class Rank
     public const MAX_RANK_LEN = 1024;
 
     /**
+     * @var non-empty-string
+     * @psalm-readonly
+     */
+    private string $rank;
+
+    /**
      * @param non-empty-string $rank
      */
-    private function __construct(private readonly string $rank)
+    private function __construct(string $rank)
     {
         self::rankValidator($rank);
+
+        $this->rank = $rank;
     }
 
     /**
