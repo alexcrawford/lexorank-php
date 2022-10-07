@@ -1,0 +1,19 @@
+{
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "logs": {
+        "text": "php://stderr",
+        "github": true,
+        "html": "infection.html"
+    },
+    "mutators": {
+        "@default": true,
+        "MethodCallRemoval": false
+    },
+    "minMsi": 80,
+    "minCoveredMsi": 80,
+    "timeout": 10
+}
