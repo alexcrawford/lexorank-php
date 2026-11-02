@@ -9,12 +9,14 @@ use AlexCrawford\LexoRank\Exception\LastCharCantBeEqualToMinChar;
 use AlexCrawford\LexoRank\Exception\MaxRankLength;
 use AlexCrawford\LexoRank\Exception\PrevGreaterThanOrEquals;
 use AlexCrawford\LexoRank\Rank;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function str_repeat;
 
-/** @covers \AlexCrawford\LexoRank\Rank */
-class RankTest extends TestCase
+#[CoversClass(Rank::class)]
+final class RankTest extends TestCase
 {
     public function testGenerateANewRankFromString(): void
     {
@@ -26,9 +28,8 @@ class RankTest extends TestCase
      * @param non-empty-string $prev
      * @param non-empty-string $next
      * @param non-empty-string $expected
-     *
-     * @dataProvider betweenProvider
      */
+    #[DataProvider('betweenProvider')]
     public function testBetween(string $prev, string $next, string $expected): void
     {
         $rank = Rank::betweenRanks(
@@ -39,9 +40,9 @@ class RankTest extends TestCase
     }
 
     /**
-     * @return array<array-key, list<non-empty-string>>
+     * @return array<array-key, array{non-empty-string, non-empty-string, non-empty-string}>
      */
-    public function betweenProvider(): array
+    public static function betweenProvider(): array
     {
         return [
             'NewDigit' => ['aaaa', 'aaab', 'aaaaU'],
@@ -58,9 +59,8 @@ class RankTest extends TestCase
     /**
      * @param non-empty-string $prev
      * @param non-empty-string $expected
-     *
-     * @dataProvider afterProvider
      */
+    #[DataProvider('afterProvider')]
     public function testAfter(string $prev, string $expected): void
     {
         $rank = Rank::after(
@@ -70,9 +70,9 @@ class RankTest extends TestCase
     }
 
     /**
-     * @return list<list<non-empty-string>>
+     * @return list<array{non-empty-string, non-empty-string}>
      */
-    public function afterProvider(): array
+    public static function afterProvider(): array
     {
         return [
             ['aaaa', 'aaab'],
@@ -86,9 +86,8 @@ class RankTest extends TestCase
     /**
      * @param non-empty-string $next
      * @param non-empty-string $expected
-     *
-     * @dataProvider beforeProvider
      */
+    #[DataProvider('beforeProvider')]
     public function testBefore(string $next, string $expected): void
     {
         $rank = Rank::before(
@@ -98,9 +97,9 @@ class RankTest extends TestCase
     }
 
     /**
-     * @return list<list<non-empty-string>>
+     * @return list<array{non-empty-string, non-empty-string}>
      */
-    public function beforeProvider(): array
+    public static function beforeProvider(): array
     {
         return [
             ['2', '1'],
@@ -118,8 +117,7 @@ class RankTest extends TestCase
 
     public function testInvalidChars(): void
     {
-        $this->expectException(InvalidChars::class);
-        $this->expectExceptionMessage('Rank provided contains an invalid Char. Rank Provided: 0/0z*z0+0z{z - Invalid char: /, *, +, {');
+        $this->expectExceptionObject(InvalidChars::forInputRankWithInvalidChars('0/0z*z0+0z{z', ['/', '*', '+', '{']));
         Rank::fromString('0/0z*z0+0z{z');
     }
 
@@ -133,8 +131,7 @@ class RankTest extends TestCase
 
     public function testLastCharCantBeEqualToMinChar(): void
     {
-        $this->expectException(LastCharCantBeEqualToMinChar::class);
-        $this->expectExceptionMessage('The last char of the rank (UUU0) can\'t be equal to the min char (0).');
+        $this->expectExceptionObject(LastCharCantBeEqualToMinChar::forRank('UUU0', Rank::MIN_CHAR));
         Rank::fromString('UUU0');
     }
 
@@ -145,8 +142,7 @@ class RankTest extends TestCase
         $prev = $base . 'x';
         $next = $base . 'y';
 
-        $this->expectException(MaxRankLength::class);
-        $this->expectExceptionMessage('The length of Rank provided is too long. Rank Provided: ' . $prev . 'U - Rank Length: ' . (Rank::MAX_RANK_LEN + 1) . ' - Max length: ' . Rank::MAX_RANK_LEN);
+        $this->expectExceptionObject(MaxRankLength::forInputRank($prev . 'U', Rank::MAX_RANK_LEN));
         Rank::betweenRanks(
             Rank::fromString($prev),
             Rank::fromString($next),
