@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlexCrawford\LexoRank\Tests;
 
+use AlexCrawford\LexoRank\Exception\EmptyRank;
 use AlexCrawford\LexoRank\Exception\InvalidChars;
 use AlexCrawford\LexoRank\Exception\LastCharCantBeEqualToMinChar;
 use AlexCrawford\LexoRank\Exception\MaxRankLength;
@@ -113,6 +114,12 @@ final class RankTest extends TestCase
     public function testForEmptySequence(): void
     {
         self::assertSame('U', Rank::forEmptySequence()->get());
+    }
+
+    public function testEmptyRank(): void
+    {
+        $this->expectExceptionObject(EmptyRank::create());
+        Rank::fromString('');
     }
 
     public function testInvalidChars(): void

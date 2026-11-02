@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlexCrawford\LexoRank;
 
+use AlexCrawford\LexoRank\Exception\EmptyRank;
 use AlexCrawford\LexoRank\Exception\InvalidChars;
 use AlexCrawford\LexoRank\Exception\LastCharCantBeEqualToMinChar;
 use AlexCrawford\LexoRank\Exception\MaxRankLength;
@@ -36,9 +37,6 @@ final class Rank
      */
     private string $rank;
 
-    /**
-     * @param non-empty-string $rank
-     */
     private function __construct(string $rank)
     {
         self::rankValidator($rank);
@@ -47,12 +45,15 @@ final class Rank
     }
 
     /**
-     * @param non-empty-string $rank
-     *
+     * @psalm-assert non-empty-string $rank
      * @psalm-pure
      */
     private static function rankValidator(string $rank): void
     {
+        if ($rank === '') {
+            throw EmptyRank::create();
+        }
+
         if (strlen($rank) > self::MAX_RANK_LEN) {
             throw MaxRankLength::forInputRank($rank, self::MAX_RANK_LEN);
         }
@@ -83,8 +84,6 @@ final class Rank
     }
 
     /**
-     * @param non-empty-string $rank
-     *
      * @psalm-pure
      */
     public static function fromString(string $rank): self
