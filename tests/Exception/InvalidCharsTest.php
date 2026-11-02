@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace AlexCrawford\LexoRank\Tests\Exception;
 
 use AlexCrawford\LexoRank\Exception\InvalidChars;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @covers \AlexCrawford\LexoRank\Exception\InvalidChars */
-class InvalidCharsTest extends TestCase
+#[CoversClass(InvalidChars::class)]
+final class InvalidCharsTest extends TestCase
 {
     public function testForInputRankWithInvalidChars(): void
     {
-        $this->expectException(InvalidChars::class);
-        $this->expectExceptionMessage('Rank provided contains an invalid Char. Rank Provided: testRank - Invalid char: A, Z');
-        $this->expectExceptionCode(0);
+        $exception = InvalidChars::forInputRankWithInvalidChars('testRank', ['A', 'Z']);
 
-        throw InvalidChars::forInputRankWithInvalidChars('testRank', ['A', 'Z']);
+        self::assertSame('Rank provided contains an invalid Char. Rank Provided: testRank - Invalid char: A, Z', $exception->getMessage());
+        self::assertSame(0, $exception->getCode());
     }
 }

@@ -15,3 +15,44 @@ which is O(n).
 
 LexoRank makes it O(1). All you need to do is updating the re-ordered
 row's order field.
+
+## Installation
+
+```
+composer require alexcrawford/lexorank-php
+```
+
+Requires PHP 8.1 or later.
+
+## Usage
+
+```php
+use AlexCrawford\LexoRank\Rank;
+
+$first = Rank::forEmptySequence();           // 'U'
+$last = Rank::after($first);                 // 'V'
+$top = Rank::before($first);                 // 'T'
+$middle = Rank::betweenRanks($first, $last); // 'UU'
+
+$rank = Rank::fromString($row->sort);
+$rank->get(); // the string to store
+```
+
+`betweenRanks()` throws `PrevGreaterThanOrEquals` if the first rank does not sort before the second.
+
+## Storing ranks
+
+Ranks are made of the ASCII characters `0` to `z`, which includes upper case, lower case and a few punctuation characters. Order by the column with a binary or case-sensitive collation, or the database will sort `a` and `A` together and the order will be wrong. In MySQL, use `ascii_bin` or `utf8mb4_bin`.
+
+A rank can be up to 1024 characters (`Rank::MAX_RANK_LEN`), and anything longer throws `MaxRankLength`. Ranks get longer as you keep inserting at the same place, for example appending to the end of one list many thousands of times. The library doesn't rebalance a list, so if that happens, rewrite the list's ranks from `forEmptySequence()` onwards.
+
+## Development
+
+```
+composer install
+vendor/bin/phpunit
+vendor/bin/psalm
+vendor/bin/phpcs
+```
+
+CI also runs [Infection](https://infection.github.io/) mutation tests.

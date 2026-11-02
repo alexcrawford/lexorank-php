@@ -15,8 +15,7 @@ class LastCharCantBeEqualToMinChar extends InvalidArgumentException
     }
 
     /**
-     * @param non-empty-string       $rank
-     * @param non-empty-list<string> $chars
+     * @param non-empty-string $rank
      */
     public static function forRank(string $rank, string $minChar): self
     {

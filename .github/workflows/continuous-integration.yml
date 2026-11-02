@@ -1,34 +1,52 @@
-# See https://github.com/laminas/laminas-continuous-integration-action
-# Generates a job matrix based on current dependencies and supported version
-# ranges, then runs all those jobs
-name: "Continuous Integration"
+name: Continuous Integration
 
 on:
   pull_request:
   push:
+    branches: [master]
 
 jobs:
-  matrix:
-    name: Generate job matrix
+  tests:
+    name: PHP ${{ matrix.php }} (${{ matrix.dependencies }})
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-    steps:
-      - name: Gather CI configuration
-        id: matrix
-        uses: laminas/laminas-ci-matrix-action@1.10.1
-
-  qa:
-    name: QA Checks
-    needs: [ matrix ]
-    runs-on: ${{ matrix.operatingSystem }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4', '8.5']
+        dependencies: [highest]
+        include:
+          - php: '8.1'
+            dependencies: lowest
     steps:
-      - name: ${{ matrix.name }}
-        uses: laminas/laminas-continuous-integration-action@1.12.0
-        env:
-          "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
         with:
-          job: ${{ matrix.job }}
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - run: vendor/bin/phpunit
+
+  qa:
+    name: Static analysis, coding standard and mutation tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: pcov
+          tools: infection
+
+      - uses: ramsey/composer-install@v3
+
+      - run: vendor/bin/psalm --no-progress --output-format=github
+
+      - run: vendor/bin/phpcs
+
+      - run: infection --threads=max --no-progress
