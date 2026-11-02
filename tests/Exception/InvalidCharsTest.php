@@ -18,4 +18,11 @@ final class InvalidCharsTest extends TestCase
         self::assertSame('Rank provided contains an invalid Char. Rank Provided: testRank - Invalid char: A, Z', $exception->getMessage());
         self::assertSame(0, $exception->getCode());
     }
+
+    public function testControlCharsAreEscapedInMessage(): void
+    {
+        $exception = InvalidChars::forInputRankWithInvalidChars("ab\ncd", ["\n"]);
+
+        self::assertSame('Rank provided contains an invalid Char. Rank Provided: ab\ncd - Invalid char: \n', $exception->getMessage());
+    }
 }

@@ -21,6 +21,6 @@ class MaxRankLength extends InvalidArgumentException
      */
     public static function forInputRank(string $rank, int $maxRankLength): self
     {
-        return new self('The length of Rank provided is too long. Rank Provided: ' . $rank . ' - Rank Length: ' . strlen($rank) . ' - Max length: ' . $maxRankLength);
+        return new self('The length of Rank provided is too long. Rank Provided: ' . RankExcerpt::of($rank) . ' - Rank Length: ' . strlen($rank) . ' - Max length: ' . $maxRankLength);
     }
 }

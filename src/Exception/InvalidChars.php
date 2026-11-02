@@ -22,6 +22,6 @@ class InvalidChars extends InvalidArgumentException
      */
     public static function forInputRankWithInvalidChars(string $rank, array $chars): self
     {
-        return new self('Rank provided contains an invalid Char. Rank Provided: ' . $rank . ' - Invalid char: ' . implode(', ', $chars));
+        return new self('Rank provided contains an invalid Char. Rank Provided: ' . RankExcerpt::of($rank) . ' - Invalid char: ' . RankExcerpt::of(implode(', ', $chars)));
     }
 }
